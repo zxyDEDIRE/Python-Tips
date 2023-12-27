@@ -1,0 +1,69 @@
+client:
+  # domain: 域名配置，默认是 []，表示运行时自动获取域名。
+  # 可配置特定域名，如下：
+  # 程序会先用第一个域名，如果第一个域名重试n次失败，则换下一个域名重试，以此类推。
+  domain:
+    - 18comic.vip
+    - jm-comic2.org
+  postman:
+    meta_data:
+      # proxies: 代理配置，默认是 null，表示不使用代理。
+      # 以下的写法都可以:
+      # proxies: clash
+      # proxies: v2ray
+      # proxies: 127.0.0.1:7890
+      # proxies:
+      #   http: http://127.0.0.1:7890
+      #   https: https://127.0.0.1:7890
+      proxies: clash
+      headers:
+        authority: authority or '18comic.vip'
+        accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+        accept-language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+        referer: https://18comic.vip
+        sec-ch-ua: '"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"'
+        sec-ch-ua-mobile: ?0
+        sec-ch-ua-platform: "Windows"
+        sec-fetch-dest: document
+        sec-fetch-mode: navigate
+        sec-fetch-site: same-origin
+        sec-fetch-user: ?1
+        cookie: AVS=mmecrt6k70tn6nrje2affsrc60; cover=1; guide=1; shuntflag=1; __cflb=02DiuDFSTg91mAHCXokV6a7XVNcUWtYE1q259egzww8ZS; _gid=GA1.2.1714006898.1686320025; ipcountry=HK; __cf_bm=cJGWqRsIKb2MxCFsMVEQtR8L4G7PaCLNuXXyZLQdn8o-1686400880-0-ASiLPfHod70GxyN4yzIg5owRkCFquvLU9k7R+nt8p29/rMbOgpYBsmWuPuwUvRojNyon4532GGmD6TSifJOdjTdUVF/j1pxTX4iyngmh1zLh; cf_chl_2=f4257ac9fb57081; cf_clearance=AG_DzHx0xcuOUjIOveI1i1pKLbSsGG0.J17wmkqbvVI-1686400895-0-250; ipm5=c8123d46362c5646296f043a269031d9; _gat_ga0=1; _gat_ga1=1; yuo1=%7B%22objName%22:%22q3K7hXugQdns%22,%22request_id%22:0,%22zones%22:%5B%7B%22idzone%22:%222967010%22,%22here%22:%7B%7D%7D,%7B%22idzone%22:%222967010%22,%22here%22:%7B%7D%7D%5D%7D; _gali=login_submit; remember_id=a%3A3%3A%7Bs%3A8%3A%22username%22%3Bs%3A11%3A%2213087319631%22%3Bs%3A8%3A%22password%22%3Bs%3A8%3A%22JYUYyY3K%22%3Bs%3A5%3A%22check%22%3Bs%3A40%3A%2216793adee7e67d55eafb0f48a32c77069623e25e%22%3B%7D; remember=a%3A3%3A%7Bs%3A8%3A%22username%22%3Bs%3A11%3A%2213087319631%22%3Bs%3A8%3A%22password%22%3Bs%3A32%3A%2205e7a78955d335cf54a9a55d61276132%22%3Bs%3A5%3A%22check%22%3Bs%3A40%3A%2216793adee7e67d55eafb0f48a32c77069623e25e%22%3B%7D; _ga_VW05C6PGN3=GS1.1.1686400435.4.1.1686401329.7.0.0; _ga=GA1.2.1666196814.1686039245
+        user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.43
+
+      # cookies: 帐号配置，默认是 null，表示未登录状态访问JM。
+      # 禁漫的大部分本子，下载是不需要登录的；少部分敏感题材需要登录才能看。
+      # 如果你希望以登录状态下载本子，最简单的方式是配置一下浏览器的cookies，
+      # 不用全部cookies，只要那个叫 AVS 就行。
+      # cookies:
+      # AVS: qkwehjjasdowqeq # 这个值是乱打的，不能用
+
+# 下载配置
+download:
+  # 如果要下载的文件在磁盘上已存在，不用再下一遍了吧？
+  cache: true
+  image:
+    decode: true # JM的原图是混淆过的，要不要还原？
+    suffix: .jpg # 把图片都转为.jpg格式
+  threading:
+    # batch_count: 章节的批量下载图片线程数
+    # 数值大，下得快，配置要求高，对禁漫压力大
+    # 数值小，下得慢，配置要求低，对禁漫压力小
+    # PS: 禁漫网页一般是一次请求50张图
+    batch_count: 30
+
+# 文件夹规则配置，决定图片文件存放在你的电脑上的哪个文件夹
+dir_rule:
+  # base_dir: 根目录。
+  base_dir: Z:\MyData\小秘密\爬w站2\xia
+    # rule: 规则dsl。
+    # 本项只建议了解编程的朋友定制，实现在这个类: jmcomic.jm_option.DirRule
+    # 写法:
+    # 1. 以'Bd'开头，表示根目录
+    # 2. 文件夹每增加一层，使用'_'区隔
+    # 3. 文件夹名字表示为 Pxxx/Ayyy，意思是 JmPhotoDetail.xxx / JmAlbumDetail的.yyy。xxx和yyy可以写什么需要看源码。
+    # 下面是示例，表示使用禁漫网站的默认下载方式 [根目录 / 本子id / 章节序号 / 图片文件]
+    # rule: Bd_Aid_Pindex
+
+    # 默认规则是: 根目录 / 章节标题 / 图片文件
+    # rule: Bd_Ptitle
